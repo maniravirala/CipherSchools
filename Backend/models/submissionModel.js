@@ -1,45 +1,19 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-const submissionSchema = new mongoose.Schema({
-  testId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Test',
-    required: true
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  selections: [
-    {
-      questionId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Question',
-        required: true
-      },
-      option: {
-        type: String,
-        required: true
-      },
-      savedAt: {
-        type: Date,
-        default: Date.now
-      }
-    }
-  ],
-  endedAt: {
-    type: Date,
-    required: true
-  },
-  isDeleted: {
-    type: Boolean,
-    default: false
-  }
-}, {
-  timestamps: true
+const selectionSchema = new Schema({
+  questionId: { type: Schema.Types.ObjectId, ref: 'Question' },
+  option: { type: String },
+  savedAt: { type: Date, default: Date.now }
 });
 
-const Submission = mongoose.model('Submission', submissionSchema);
+const submissionSchema = new Schema({
+  testId: { type: Schema.Types.ObjectId, ref: 'Test', required: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  selections: [selectionSchema],
+  endedAt: { type: Date },
+  isDeleted: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now }
+});
 
-module.exports = Submission;
+module.exports = mongoose.model('Submission', submissionSchema);

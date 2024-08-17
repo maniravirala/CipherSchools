@@ -1,20 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const questionController = require('../controllers/questionController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-// Create a question
-router.post('/create', questionController.createQuestion);
+// Protect routes with authMiddleware
+router.use(authMiddleware);
 
-// Get all questions
+// Public routes
+router.post('/', questionController.createQuestion);
 router.get('/', questionController.getAllQuestions);
-
-// Get a single question by ID
 router.get('/:id', questionController.getQuestionById);
-
-// Update a question by ID
 router.put('/:id', questionController.updateQuestion);
-
-// Delete a question by ID
 router.delete('/:id', questionController.deleteQuestion);
 
 module.exports = router;

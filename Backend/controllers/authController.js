@@ -24,7 +24,12 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     // Create new user
-    const user = await User.create({ name, email, password: hashedPassword });
+    const user = await User.create({ 
+      name, 
+      email, 
+      password: hashedPassword,
+      isDeleted: false, // Ensure default value for isDeleted
+    });
 
     // Generate JWT token
     const token = signToken(user._id);
@@ -56,7 +61,7 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     // Check if user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email, isDeleted: false });
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
@@ -83,4 +88,15 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const logout = (req, res) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000), // expires in 10 seconds
+    httpOnly: true, // Not accessible via JavaScript
+    secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+  });
+  res.status(200).json({
+    message: 'Logged out successfully',
+  });
+}
+
+module.exports = { register, login, logout };
