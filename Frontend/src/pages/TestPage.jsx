@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const TestPage = () => {
   const [windowOpen, setWindowOpen] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  useEffect(() => {
-    const newWindow = window.open("/test", "_blank", "popup");
+  const openNewTab = () => {
+    const newWindow = window.open(`/test/${id}`, "_blank", "popup");
 
     if (newWindow) {
       // Ensure the window is loaded before attaching onload
       const interval = setInterval(() => {
-        if (newWindow.document.readyState === 'complete') {
+        if (newWindow.document.readyState === "complete") {
           clearInterval(interval);
           setWindowOpen(true);
         }
@@ -28,30 +29,46 @@ const TestPage = () => {
       newWindow.onbeforeunload = () => {
         setWindowOpen(false);
       };
+
+      newWindow.onunload = () => {
+        setWindowOpen(false);
+      };
     } else {
-      console.error("Failed to open new window. It might be blocked by the browser.");
+      console.error(
+        "Failed to open new window. It might be blocked by the browser."
+      );
     }
+  };
+
+  useEffect(() => {
+    openNewTab();
 
     return () => {
-        window.removeEventListener("message", () => {});
+      window.removeEventListener("message", () => {});
     };
   }, []);
 
-  return(
+  return (
     <div className="h-screen flex items-center justify-center">
-        {windowOpen ? (
-            <div className="text-center">
-            <h1 className="text-3xl font-bold">Test Page</h1>
-            <p className="mt-4 text-lg">This is a test page.</p>
-            </div>
-        ) : (
-            <div className="text-center">
-            <h1 className="text-3xl font-bold">Loading Test Page...</h1>
-            <p className="mt-4 text-lg">Please wait while we load the test page.</p>
-            </div>
-        )}
+      {windowOpen ? (
+        <div className="text-center">
+          <h1 className="text-3xl font-bold">Test Page</h1>
+          <p className="mt-4 text-lg">This is a test page.</p>
+        </div>
+      ) : (
+        <div className="text-center">
+          <h1 className="text-3xl font-bold">Loading Test Page...</h1>
+          <p className="mt-4 text-lg">Please wait while we load the test page.</p>
+          <button
+            onClick={openNewTab}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+          >
+            Retry Opening Test
+          </button>
+        </div>
+      )}
     </div>
-  )
+  );
 };
 
 export default TestPage;
