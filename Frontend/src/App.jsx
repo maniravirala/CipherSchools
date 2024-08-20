@@ -21,7 +21,8 @@ function App() {
           <Route path="/" element={<PrivateRoute><NavbarLayout><Dashboard /></NavbarLayout></PrivateRoute>} />
           <Route path="/permissions/:id" element={<PrivateRoute><NavbarLayout><PermissionPage /></NavbarLayout></PrivateRoute>} />
           <Route path="/test-page/:id" element={<PrivateRoute><NavbarLayout><TestPage /></NavbarLayout></PrivateRoute>} />
-          <Route path="/test/:id" element={<PrivateRoute><Test /></PrivateRoute>} />
+          {/* <Route path="/test/:id" element={<PrivateRoute><Test /></PrivateRoute>} /> */}
+          <Route path="/test/:id" element={<Test />} />
           <Route path="/finish" element={<PrivateRoute><NavbarLayout><FinishTest /></NavbarLayout></PrivateRoute>} />
           {/* Catch-all Route */}
           <Route path="*" element={<h1>Not Found</h1>} />
