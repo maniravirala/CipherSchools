@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_KEY_URL;
+console.log(API_URL);
 
 // Function to get available tests
 
