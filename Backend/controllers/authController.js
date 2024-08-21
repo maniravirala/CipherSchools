@@ -37,7 +37,7 @@ const register = async (req, res) => {
     // Set the JWT token as a cookie
     res.cookie("token", token, {
       // httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      // secure: process.env.NODE_ENV === "production", // HTTPS only in production
       maxAge: 24 * 60 * 60 * 1000, // 1 day
       // sameSite: "Strict",
     });
@@ -80,7 +80,7 @@ const login = async (req, res) => {
     // Set the JWT token as a cookie
     res.cookie("token", token, {
       // httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      // secure: process.env.NODE_ENV === "production", // HTTPS only in production
       maxAge: 24 * 60 * 60 * 1000, // 1 day
       // sameSite: "Strict",
     });
