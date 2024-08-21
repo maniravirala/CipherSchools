@@ -2,39 +2,47 @@
 
 ## Overview
 
-**Exam Studio** is a secure and comprehensive platform for creating and taking multiple-choice question (MCQ) tests. This system ensures a robust test-taking experience with enhanced security features and a modern tech stack.
+**Exam Studio** is a secure platform for creating and taking MCQ tests. It provides a modern test-taking experience with robust security and an intuitive design.
 
-### Key Security Features
+## User Account for Testing
 
-- **Secure Test Environment**: Tests open in a separate window where browser extensions are disabled to prevent tampering.
-- **Copy-Paste and Context Menu Disabled**: Copy-paste functionality and right-click context menus are disabled to ensure the integrity of the test.
-- **Context-Based Authentication**: Every route is protected through context-based authentication, ensuring secure access to the test and other functionalities.
-- **User-Friendly MCQ Interface**: The MCQ test interface is designed to be eco-friendly and intuitive, with easy navigation to enhance user experience.
-- **Persistent Timer**: The timer tracks the test duration across page reloads by syncing with the server, so users don't need to worry about timing issues.
-- **Automated Test Evaluation**: A cron job runs every hour to evaluate tests and send results to students, ensuring timely feedback.
+Explore the platform with these credentials:
+- **Email**: raviralamani5@gmail.com
+- **Password**: Exam@123
+
+🔒 Please note: Results won't be shared. Sign up to receive results. We don’t store passwords.
+
+## Key Security Features
+
+- **Secure Test Environment**: Opens in a separate window with disabled browser extensions.
+- **Copy-Paste & Context Menu Disabled**: Prevents tampering.
+- **Context-Based Authentication**: Ensures secure access to all routes.
+- **Eco-Friendly MCQ Interface**: Intuitive and easy to navigate.
+- **Persistent Timer**: Tracks test duration across page reloads.
+- **Automated Evaluation**: Tests are evaluated every hour and results are sent to students.
 
 ## What I Have Done and Learned
 
-- **Implemented Test Creation**: Developed a feature to create MCQ tests with options for adding and configuring questions.
-- **User Authentication**: Integrated user authentication using cookies for secure login and session management.
-- **CORS Configuration**: Configured CORS to handle requests from multiple origins securely.
-- **Email Notifications**: Created and configured an email template for sending test scores and notifications using a custom email service.
-- **Test Evaluation**: Implemented a test evaluation system with cron jobs for automatic grading.
-- **Route Protection**: Secured routes with authentication middleware to prevent unauthorized access.
-- **Token Management**: Used JWT for token generation and verification to authenticate users.
-- **Database Integration**: Connected the backend API with MongoDB to store test data and user information.
-- **Custom Error Handling**: Implemented custom error handlers to manage exceptions and errors.
-- **Dynamic Route Generation**: Created dynamic routes to display test data and user information.
-- **Test Timer**: Developed a persistent timer feature to track test duration across page reloads.
-- **Environment Configuration**: Managed environment variables for both backend and frontend applications.
+- **Test Creation**: Added features for creating and managing MCQs.
+- **User Authentication**: Implemented secure login with cookies.
+- **CORS Configuration**: Set up for multiple origins.
+- **Email Notifications**: Custom email service for test scores.
+- **Test Evaluation**: Automated grading with cron jobs.
+- **Route Protection**: Secured with authentication middleware.
+- **Token Management**: Used JWT for user authentication.
+- **Database Integration**: Connected to MongoDB.
+- **Error Handling**: Implemented custom error management.
+- **Dynamic Routing**: For test data and user info.
+- **Test Timer**: Persistent across page reloads.
+- **Environment Configuration**: Managed for both backend and frontend.
 
 ## Features
 
-- **Test Creation**: Create and manage multiple types of MCQ sections.
-- **User Authentication**: Secure login system using cookies.
-- **Test Taking**: Users can attempt tests with real-time feedback and navigation.
-- **Timer**: Persistent timer to track test duration.
-- **Email Notifications**: Automated emails with test scores and feedback.
+- **Test Creation**: Manage MCQ sections.
+- **User Authentication**: Secure login with cookies.
+- **Test Taking**: Real-time feedback and navigation.
+- **Timer**: Tracks duration persistently.
+- **Email Notifications**: Automated test scores and feedback.
 
 ## Tech Stack
 
@@ -47,7 +55,7 @@
 
 ### Backend
 
-1. Clone the repository:
+1. Clone the repo:
     ```bash
     git clone https://github.com/maniravirala/CipherSchools.git
     cd CipherSchools/Backend
@@ -58,7 +66,7 @@
     npm install
     ```
 
-3. Create a `.env` file in the root directory with the following content:
+3. Create a `.env` file:
     ```plaintext
     JWT_SECRET=your_jwt_secret_here
     JWT_EXPIRES_IN=10
@@ -76,9 +84,8 @@
 
 ### Frontend
 
-1. Clone the repository:
+1. Navigate to the frontend directory:
     ```bash
-    # git clone https://github.com/maniravirala/CipherSchools.git # already Cloned
     cd CipherSchools/Frontend
     ```
 
@@ -87,7 +94,7 @@
     npm install
     ```
 
-3. Create a `.env` file in the root directory with the following content:
+3. Create a `.env` file:
     ```plaintext
     VITE_API_URL=http://localhost:8000/api
     ```
@@ -105,13 +112,12 @@
 
 ## Acknowledgements
 
-- **React**: For building the user interface.
-- **Tailwind CSS**: For styling the components.
-- **Shadcn UI**: For additional UI components.
-- **Express.js**: For backend API services.
-- **MongoDB**: For database management.
+- **React**: For the UI.
+- **Tailwind CSS**: For styling.
+- **Shadcn UI**: For UI components.
+- **Express.js**: For backend services.
+- **MongoDB**: For database.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
+Licensed under MIT. See [LICENSE](LICENSE) for details.
