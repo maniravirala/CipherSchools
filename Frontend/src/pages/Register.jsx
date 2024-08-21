@@ -32,6 +32,7 @@ const Register = () => {
 
     try {
       const response = await handleRegister(name, email, password);
+      localStorage.setItem("user", JSON.stringify(response.user));
       toast.success(response.message);
     } catch (error) {
       toast.error(error.message || error);
@@ -41,21 +42,9 @@ const Register = () => {
 
   return (
     <div>
-      <div className="md:hidden">
-        <img
-          src="/examples/authentication-light.png"
-          alt="Authentication"
-          className="block dark:hidden"
-        />
-        <img
-          src="/examples/authentication-dark.png"
-          alt="Authentication"
-          className="hidden dark:block"
-        />
-      </div>
-      <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      <div className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
-          <div className="absolute inset-0 bg-zinc-900" />
+          <div className="absolute inset-0 bg-gray-700" />
           <div className="relative z-20 flex items-center text-lg font-medium">
             <img src={Logo} alt="Logo" className="w-8 h-8 mr-2" />
             CipherSchools

@@ -52,6 +52,7 @@ const RightPanel = ({
     },
     { answered: 0, unanswered: 0, markedForReview: 0, answeredAndMarkedForReview: 0 }
   );
+  
 
   return (
     <div className="p-4 rounded-md bg-gray-100 h-full">

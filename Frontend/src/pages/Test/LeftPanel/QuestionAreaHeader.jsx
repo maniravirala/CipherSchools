@@ -13,14 +13,14 @@ const QuestionAreaHeader = ({ currentQuestionIndex, questions, handleClearAnswer
       {answers[questions[currentQuestionIndex].id] && (
         <div className="flex gap-4 items-center ml-auto">
           <button className="text-blue-600 hover:underline" onClick={handleClearAnswer}>
-            Clear Answer
+            Clear Response
           </button>
         </div>
       )}
       <div className="flex gap-4 items-center ml-auto">
         Marking Scheme
         <div className="size-10 rounded-lg bg-gray-200 flex justify-center items-center">
-          +1
+          +{questions[currentQuestionIndex].marks || 1}
         </div>
         <div className="size-10 rounded-lg bg-gray-200 flex justify-center items-center">
           0

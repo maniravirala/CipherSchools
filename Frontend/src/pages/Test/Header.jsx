@@ -17,6 +17,8 @@ const Header = ({ data, handleSubmitTest, duration }) => {
 
   const [timeLeft, setTimeLeft] = useState(duration)
 
+  const name = JSON.parse(localStorage.getItem("user")).name;
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => prev - 1);
@@ -34,7 +36,7 @@ const Header = ({ data, handleSubmitTest, duration }) => {
     <header className="px-4 py-2 flex justify-between items-center text-white bg-gradient-to-r from-sky-600 to-indigo-800 shadow-sm">
       <div className="flex items-center space-x-2">
         <div className="size-10 rounded-full bg-gray-200 flex justify-center items-center text-gray-500 text-xl font-bold">
-          {data.name
+          {name
             .split(" ")
             .map((word) => word[0])
             .join("")}
@@ -61,8 +63,7 @@ const Header = ({ data, handleSubmitTest, duration }) => {
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+                This action cannot be undone. This will submit your test.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

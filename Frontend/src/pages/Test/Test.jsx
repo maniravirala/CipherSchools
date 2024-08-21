@@ -8,6 +8,7 @@ import RightPanel from "./RightPanel/RightPanel";
 import { useParams } from "react-router-dom";
 import { startTest, submitTest } from "@/services/testServices";
 import { deductDurationFromStartTime } from "@/lib/utils";
+import Restriction from "@/components/Restriction";
 
 // const questions = [
 //   {
@@ -52,6 +53,8 @@ const Test = () => {
 
   const [questions, setQuestions] = useState([]);
   const [duration, setDuration] = useState(0);
+  const [headerData, setHeaderData] = useState({});
+
 
   useEffect(() => {
     const fetchTest = async () => {
@@ -59,9 +62,13 @@ const Test = () => {
         const response = await startTest(id);
         setQuestions(response.test.questions);
         setDuration(deductDurationFromStartTime(response.test.startedAt, response.test.duration));
+        setHeaderData({testName: response.test.title});
         toast.success(response.message);
       } catch (error) {
         toast.error(error.message || error);
+        window.opener.postMessage({ type: "TEST_SUBMISSION_FAILED", message: error.message || error }, "*");
+        window.close();
+        localStorage.removeItem(id); // Clear storage on error
       }
     };
     fetchTest();
@@ -123,27 +130,6 @@ const Test = () => {
   }
 
 
-
-      // fetch("/api/submit-test", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ answers, markedForReview }),
-      // })
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     window.opener.postMessage({ type: "TEST_SUBMITTED" }, "*");
-      //     window.close();
-      //     localStorage.removeItem(id); // Clear storage after submission
-      //   })
-      //   .catch((error) => {
-      //     toast.error("Failed to submit test. Please try again.");
-      //     console.error("Error submitting test:", error);
-      //   });
-
-  // };
-
   const handleClearAnswer = () => {
     setTestState((prevState) => {
       const { [questions[currentQuestionIndex].id]: _, ...rest } = prevState.answers;
@@ -153,30 +139,14 @@ const Test = () => {
       };
     });
   }
-
-  // Cleanup on window close
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      const confirmationMessage = "Are you sure you want to leave? Your progress may not be saved.";
-      event.returnValue = confirmationMessage; // Required for modern browsers
-      return confirmationMessage;
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [id]);
-
-  const name = "John Doe";
-  const testName = "Cipher Schools Aptitude Test - 2025";
-
   if (!questions.length) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="h-screen flex flex-col">
-      <Header data={{ name, testName }} handleSubmitTest={handleSubmitTest} duration={duration} />
+      <Restriction />
+      <Header data={headerData} handleSubmitTest={handleSubmitTest} duration={duration} />
       <div className="flex flex-1 overflow-hidden">
         <div className="flex flex-col md:flex-row w-full">
           <div className="md:w-2/3 flex flex-col">

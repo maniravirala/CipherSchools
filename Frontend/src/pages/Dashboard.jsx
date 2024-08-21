@@ -6,44 +6,78 @@ import { getAvailableTests } from "@/services/testServices";
 import { toast } from "sonner";
 
 const Dashboard = () => {
-  const [tests, setTests] = useState([]);
+  const [availableTests, setAvailableTests] = useState([]);
+  const [completedTests, setCompletedTests] = useState([]);
 
   useEffect(() => {
     const fetchTests = async () => {
-      try{
+      try {
         const response = await getAvailableTests();
-        setTests(response.tests);
+        const tests = response.tests;
+
+        // Separate tests into available and completed
+        const available = tests.filter(test => !test.endedAt);
+        const completed = tests.filter(test => test.endedAt);
+
+        setAvailableTests(available);
+        setCompletedTests(completed);
+
         toast.success("Tests fetched successfully");
-      }
-      catch(error){
+      } catch (error) {
         toast.error(error.message || error);
       }
     };
+
     fetchTests();
   }, []);
 
   return (
     <div className="container mx-auto mt-8 p-4">
-      <h1 className="text-3xl font-bold mb-4">Available Tests</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {tests.map((test) => (
-          <Card key={test.id} className="shadow-lg">
-            <CardHeader>
-              <h2 className="text-xl font-semibold">{test.title}</h2>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4 text-gray-700">{test.description}</p>
-              <Link
-                to={`/permissions/${test.id}`}
-                className="block mb-4 text-blue-500"
-              >
-                <Button className="w-full">
-                  Start Test
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        ))}
+      <div>
+        <h1 className="text-3xl font-bold mb-4">Available Tests</h1>
+        {availableTests.length === 0 && (
+          <p className="text-gray-500">No tests available</p>
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {availableTests.map((test) => (
+            <Card key={test.id} className="shadow-lg">
+              <CardHeader>
+                <h2 className="text-xl font-semibold">{test.title}</h2>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-4 text-gray-700">{test.description}</p>
+                <Link
+                  to={`/permissions/${test.id}`}
+                  className="block mb-4 text-blue-500"
+                >
+                  <Button className="w-full">
+                    Start Test
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <h1 className="text-3xl font-bold mb-4">Completed Tests</h1>
+        {completedTests.length === 0 && (
+          <p className="text-gray-500">No tests completed</p>
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {completedTests.map((test) => (
+            <Card key={test.id} className="shadow-lg">
+              <CardHeader>
+                <h2 className="text-xl font-semibold">{test.title}</h2>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-4 text-gray-700">{test.description}</p>
+                <p className="text-gray-500">Completed on: {new Date(test.endedAt).toLocaleDateString()}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );

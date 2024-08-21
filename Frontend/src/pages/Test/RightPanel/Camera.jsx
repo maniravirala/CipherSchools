@@ -1,19 +1,37 @@
-import Webcam from "react-webcam";
+import React, { useEffect, useRef } from "react";
 
-const Camera = () => {
-    return (
-        <div className="mt-4 flex justify-center">
-        <Webcam
-          audio={false}
-          screenshotFormat="image/jpeg"
-          className="rounded-lg border-2 border-gray-300"
-          videoConstraints={{
-            height: 200,
-            facingMode: "user",
-          }}
-        />
-      </div>
-    );
-}
+const CameraComponent = () => {
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
 
-export default Camera;
+  useEffect(() => {
+    const startCamera = async () => {
+      try {
+        streamRef.current = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
+        if (videoRef.current) {
+          videoRef.current.srcObject = streamRef.current;
+        }
+      } catch (error) {
+        console.error("Error accessing camera:", error);
+      }
+    };
+
+    startCamera();
+
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, []);
+
+  return (
+    <div className="mt-4 flex justify-center rounded-lg">
+      <video ref={videoRef} autoPlay className="rounded-lg" />
+    </div>
+  );
+};
+
+export default CameraComponent;

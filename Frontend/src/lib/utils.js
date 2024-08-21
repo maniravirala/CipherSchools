@@ -26,6 +26,7 @@ export const formatTime = (time) => {
 }
 
 export const deductDurationFromStartTime = (startTime, duration) => {
+  console.log(startTime, duration)
   const startObj = new Date(startTime);
   const milliseconds = duration * 1000;
 

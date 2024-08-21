@@ -10,7 +10,7 @@ const PermissionPage = () => {
   const [isCameraOn, setIsCameraOn] = useState(false);
   const [micStatus, setMicStatus] = useState("checking"); // 'ok', 'error', 'checking'
   const [cameraStatus, setCameraStatus] = useState("checking"); // 'ok', 'error', 'checking'
-  const {id} = useParams();
+  const { id } = useParams();
 
   const checkPermissions = () => {
     // Reset status to checking
@@ -41,6 +41,17 @@ const PermissionPage = () => {
 
   useEffect(() => {
     checkPermissions();
+
+    return () => {
+      // Cleanup function to stop the webcam
+      if (webcamRef.current) {
+        const stream = webcamRef.current.video?.srcObject;
+        if (stream) {
+          const tracks = stream.getTracks();
+          tracks.forEach(track => track.stop());
+        }
+      }
+    };
   }, []);
 
   const statusIcon = (status) => {
