@@ -3,6 +3,8 @@ const connectDB = require('./config/db');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require('dotenv').config();
+require('./cronJobs/evaluateTests');
+
 
 // Import Routes
 const authRoutes = require('./routes/authRoutes');
@@ -31,6 +33,11 @@ app.use('/api/auth', authRoutes);
 app.use('/api/test', testRoutes);
 app.use('/api/submission', submissionRoutes);
 app.use('/api/question', questionRoutes);
+
+
+app.get('/', (req, res) => {
+  res.send('Welcome to Exam Studio API');
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;

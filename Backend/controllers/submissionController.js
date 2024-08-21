@@ -2,6 +2,7 @@ const Submission = require('../models/submissionModel');
 const Test = require('../models/testModel');
 const User = require('../models/userModel');
 const Question = require('../models/questionModel');
+const getUserId = require('../utils/getUserId');
 
 // Create a new submission
 exports.createSubmission = async (req, res) => {
@@ -86,11 +87,33 @@ exports.getSubmissionByTestAndUser = async (req, res) => {
 // Update a submission by ID
 exports.updateSubmission = async (req, res) => {
   try {
-    const { selections, endedAt } = req.body;
+    const { testId } = req.params;
+    const userId = getUserId(req);
+    const { selections } = req.body;
+
+
+    const submission = await Submission.findOne({ testId, userId });
+
+    if (!submission) {
+      return res.status(404).json({ message: 'Submission not found' });
+    }
+
+    // Validate if all questions in selections are valid
+    for (const selection of selections) {
+      const question = await Question.findById(selection.questionId);
+      if (!question) {
+        return res.status(400).json({ message: `Question ${selection.questionId} is invalid` });
+      }
+    }
+
+    // if submission is already ended, don't update
+    if (submission.endedAt) {
+      return res.status(400).json({ message: 'Submission already ended' });
+    }
 
     const updatedSubmission = await Submission.findByIdAndUpdate(
-      req.params.id,
-      { selections, endedAt },
+      submission._id,
+      { selections, endedAt: Date.now() },
       { new: true, runValidators: true }
     );
 

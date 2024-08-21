@@ -21,4 +21,7 @@ router.patch('/:id', testController.updateTest);
 // Delete a test by ID
 router.delete('/:id', testController.deleteTest);
 
+// Get the test by id and start the test
+router.get('/:testId/start', testController.startTest);
+
 module.exports = router;

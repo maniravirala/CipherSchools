@@ -13,7 +13,7 @@ router.post('/', submissionController.createSubmission);
 router.get('/:testId/:userId', submissionController.getSubmissionByTestAndUser);
 
 // Update a submission by ID
-router.patch('/:id', submissionController.updateSubmission);
+router.patch('/:testId', submissionController.updateSubmission);
 
 // Soft delete a submission by ID
 router.patch('/:id/delete', submissionController.deleteSubmission);

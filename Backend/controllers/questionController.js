@@ -3,7 +3,7 @@ const Question = require('../models/questionModel');
 // Create a new question
 exports.createQuestion = async (req, res) => {
   try {
-    const { question, options, correctOption, marks } = req.body;
+    const { question, options, correctOption, marks, section } = req.body;
 
     // Validate required fields
     if (!question || !options || !correctOption || !marks) {
@@ -15,6 +15,7 @@ exports.createQuestion = async (req, res) => {
       question,
       options,
       correctOption,
+      section,
       marks,
       isDeleted: false, // Default value for isDeleted
     });
