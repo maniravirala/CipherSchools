@@ -142,6 +142,15 @@ Explore the platform with these credentials:
 
 - **Email Notification**: ![Email Screenshot](./Frontend/src/assets/ScreenShots/mail.png)
 
+## Template
+
+```markdown
+### `src/app.js`
+
+
+const express = require('express');
+const app = express();
+
 ## Acknowledgements
 
 - **React**: For the UI. ⚛️
