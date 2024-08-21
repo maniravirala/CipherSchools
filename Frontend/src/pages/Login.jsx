@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Logo } from "@/assets";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,6 +26,7 @@ const Login = () => {
     try {
       const response = await handleLogin(email, password);
       localStorage.setItem("user", JSON.stringify(response.user));
+      Cookies.set("token", response.token);
       toast.success(response.message);
     } catch (error) {
       toast.error(error.message || error);
