@@ -25,6 +25,8 @@ app.use(cors({
   credentials: true,
 }));
 
+console.log(process.env.CLIENT_URL);
+
 // Connect to DB
 connectDB();
 
