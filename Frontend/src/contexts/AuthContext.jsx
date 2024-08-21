@@ -8,7 +8,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage('isLoggedIn', false);
 
-  const token = Cookies.get("token");
+  const token = Cookies.get("token") || localStorage.getItem('token');
 
   useEffect(() => {
     setIsLoggedIn(!!token); // Ensure token is treated as a boolean

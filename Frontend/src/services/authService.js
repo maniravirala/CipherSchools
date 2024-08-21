@@ -16,6 +16,7 @@ export const login = async (email, password) => {
       { withCredentials: true, credentials: "include" }
     );
     // Cookies.set("token", response.data.token, { expires: 7, sameSite: "Lax" });
+    localStorage.setItem('token', response.data.token)
     return response.data;
   } catch (error) {
     throw error.response.data.message || "An error occurred while logging in";
@@ -39,6 +40,7 @@ export const register = async (name, email, password) => {
     );
 
     // Cookies.set("token", response.data.token, { expires: 7, sameSite: "Lax" });
+    localStorage.setItem('token', response.data.token)
     return response.data;
   } catch (error) {
     throw (
@@ -50,7 +52,7 @@ export const register = async (name, email, password) => {
 
 // Function to check if user is authenticated
 export const isAuthenticated = () => {
-  const token = Cookies.get("token");
+  const token = Cookies.get("token") || localStorage.getItem('token');
   return !!token;
 };
 
@@ -61,6 +63,7 @@ export const logout = async() => {
       withCredentials: true,
       credentials: "include",
     });
+    localStorage.removeItem('token')
     return response.data
   } catch (error){
     throw(
