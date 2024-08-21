@@ -2,27 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"; // Shadcn Button component
 import { Card, CardHeader, CardContent } from "@/components/ui/card"; // Shadcn Card components
 import { Link } from "react-router-dom";
+import { getAvailableTests } from "@/services/testServices";
+import { toast } from "sonner";
 
 const Dashboard = () => {
   const [tests, setTests] = useState([]);
 
   useEffect(() => {
-    // Mock API call to fetch available tests
     const fetchTests = async () => {
-      const response = [
-        {
-          id: 1,
-          name: "Math Test",
-          description: "A test on basic math skills",
-        },
-        {
-          id: 2,
-          name: "Science Test",
-          description: "A test on basic science knowledge",
-        },
-        // Add more tests here
-      ];
-      setTests(response);
+      try{
+        const response = await getAvailableTests();
+        setTests(response.tests);
+        toast.success("Tests fetched successfully");
+      }
+      catch(error){
+        toast.error(error.message || error);
+      }
     };
     fetchTests();
   }, []);
@@ -34,7 +29,7 @@ const Dashboard = () => {
         {tests.map((test) => (
           <Card key={test.id} className="shadow-lg">
             <CardHeader>
-              <h2 className="text-xl font-semibold">{test.name}</h2>
+              <h2 className="text-xl font-semibold">{test.title}</h2>
             </CardHeader>
             <CardContent>
               <p className="mb-4 text-gray-700">{test.description}</p>

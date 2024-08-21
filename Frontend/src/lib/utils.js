@@ -23,4 +23,26 @@ export const formatTime = (time) => {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-} 
+}
+
+export const deductDurationFromStartTime = (startTime, duration) => {
+  const startObj = new Date(startTime);
+  const milliseconds = duration * 1000;
+
+  const end = new Date(startObj.getTime() + milliseconds);
+  const current = new Date();
+  const remainingTime = end - current;
+
+  const remainingSeconds = Math.max(Math.floor(remainingTime / 1000), 0);
+
+  const formattedTime = formatTime(remainingSeconds);
+
+  // console.log(`Start Time: ${startObj}`);
+  // console.log(`Duration (s): ${duration}`);
+  // console.log(`End Time: ${end}`);
+  // console.log(`Current Time: ${current}`);
+  // console.log(`Remaining Time (seconds): ${remainingSeconds}`);
+  // console.log(`Formatted Remaining Time: ${formattedTime}`);
+
+  return remainingSeconds;
+}

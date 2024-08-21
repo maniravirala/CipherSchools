@@ -6,39 +6,41 @@ import QuestionAreaHeader from "./LeftPanel/QuestionAreaHeader";
 import QuestionArea from "./LeftPanel/QuestionArea";
 import RightPanel from "./RightPanel/RightPanel";
 import { useParams } from "react-router-dom";
+import { startTest, submitTest } from "@/services/testServices";
+import { deductDurationFromStartTime } from "@/lib/utils";
 
-const questions = [
-  {
-    id: 23,
-    section: "Quant",
-    question: "What is the full form of MERN?",
-    options: [
-      "MongoDB, Express, React, Node.js",
-      "MySQL, Express, React, Node.js",
-      "MongoDB, Ember, React, Node.js",
-      "MongoDB, Express, Ruby, Node.js",
-    ],
-  },
-  {
-    id: 2,
-    section: "Quant",
-    question: "Which of the following is a NoSQL database?",
-    options: ["MongoDB", "MySQL", "PostgreSQL", "SQLite"],
-  },
-  {
-    id: 3,
-    section: "Verbal",
-    question: "Which of the following is a JavaScript framework?",
-    options: ["React", "Angular", "Vue", "All of the above"],
-  },
-  {
-    id: 4,
-    section: "Verbal",
-    question: "Which of the following is a backend framework?",
-    options: ["Express", "React", "Angular", "Vue"],
-  },
-  // Add more questions as needed
-];
+// const questions = [
+//   {
+//     id: 23,
+//     section: "Quant",
+//     question: "What is the full form of MERN?",
+//     options: [
+//       "MongoDB, Express, React, Node.js",
+//       "MySQL, Express, React, Node.js",
+//       "MongoDB, Ember, React, Node.js",
+//       "MongoDB, Express, Ruby, Node.js",
+//     ],
+//   },
+//   {
+//     id: 2,
+//     section: "Quant",
+//     question: "Which of the following is a NoSQL database?",
+//     options: ["MongoDB", "MySQL", "PostgreSQL", "SQLite"],
+//   },
+//   {
+//     id: 3,
+//     section: "Verbal",
+//     question: "Which of the following is a JavaScript framework?",
+//     options: ["React", "Angular", "Vue", "All of the above"],
+//   },
+//   {
+//     id: 4,
+//     section: "Verbal",
+//     question: "Which of the following is a backend framework?",
+//     options: ["Express", "React", "Angular", "Vue"],
+//   },
+//   // Add more questions as needed
+// ];
 
 const Test = () => {
   const { id } = useParams();
@@ -47,6 +49,23 @@ const Test = () => {
     answers: {},
     markedForReview: {},
   });
+
+  const [questions, setQuestions] = useState([]);
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    const fetchTest = async () => {
+      try {
+        const response = await startTest(id);
+        setQuestions(response.test.questions);
+        setDuration(deductDurationFromStartTime(response.test.startedAt, response.test.duration));
+        toast.success(response.message);
+      } catch (error) {
+        toast.error(error.message || error);
+      }
+    };
+    fetchTest();
+  }, [id]);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
@@ -85,26 +104,45 @@ const Test = () => {
     );
   };
 
-  const handleSubmitTest = () => {
-      fetch("/api/submit-test", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ answers, markedForReview }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          window.opener.postMessage({ type: "TEST_SUBMITTED" }, "*");
-          window.close();
-          localStorage.removeItem(id); // Clear storage after submission
-        })
-        .catch((error) => {
-          toast.error("Failed to submit test. Please try again.");
-          console.error("Error submitting test:", error);
-        });
+  const handleSubmitTest = async () => {
+    const answers = Object.keys(testState.answers).map((questionId) => ({
+      questionId,
+      answer: testState.answers[questionId],
+      markedForReview: testState.markedForReview[questionId],
+    }));
 
-  };
+    try {
+      const response = await submitTest(id, answers);
+      window.opener.postMessage({ type: "TEST_SUBMITTED" }, "*");
+      window.close();
+      localStorage.removeItem(id); // Clear storage after submission
+      toast.success(response.message);
+    } catch (error) {
+      toast.error(error.message || error);
+    }
+  }
+
+
+
+      // fetch("/api/submit-test", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ answers, markedForReview }),
+      // })
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     window.opener.postMessage({ type: "TEST_SUBMITTED" }, "*");
+      //     window.close();
+      //     localStorage.removeItem(id); // Clear storage after submission
+      //   })
+      //   .catch((error) => {
+      //     toast.error("Failed to submit test. Please try again.");
+      //     console.error("Error submitting test:", error);
+      //   });
+
+  // };
 
   const handleClearAnswer = () => {
     setTestState((prevState) => {
@@ -132,9 +170,13 @@ const Test = () => {
   const name = "John Doe";
   const testName = "Cipher Schools Aptitude Test - 2025";
 
+  if (!questions.length) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="h-screen flex flex-col">
-      <Header data={{ name, testName }} handleSubmitTest={handleSubmitTest} duration={30 * 60} />
+      <Header data={{ name, testName }} handleSubmitTest={handleSubmitTest} duration={duration} />
       <div className="flex flex-1 overflow-hidden">
         <div className="flex flex-col md:flex-row w-full">
           <div className="md:w-2/3 flex flex-col">
