@@ -78,7 +78,7 @@
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/maniravirala/CipherSchools.git
+    # git clone https://github.com/maniravirala/CipherSchools.git # already Cloned
     cd CipherSchools/Frontend
     ```
 

@@ -3,7 +3,7 @@ const Submission = require("../models/submissionModel");
 const Test = require("../models/testModel");
 const sendScoreEmail = require("../utils/emailService"); 
 
-cron.schedule("* * * * *", async () => {
+cron.schedule("0 * * * *", async () => {
     try {
         // Fetch all submissions that need to be evaluated
         const submissions = await Submission.find({
