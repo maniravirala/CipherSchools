@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const API_URL = "http://localhost:8000/api";
+const API_URL = import.meta.env.VITE_API_KEY_URL;
 
 // Function to login user
 export const login = async (email, password) => {
