@@ -8,6 +8,7 @@ router.use(authMiddleware);
 
 // Public routes
 router.post('/', questionController.createQuestion);
+router.post('/bulk', questionController.createQuestionsBulk);
 router.get('/', questionController.getAllQuestions);
 router.get('/:id', questionController.getQuestionById);
 router.put('/:id', questionController.updateQuestion);

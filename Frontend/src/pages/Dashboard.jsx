@@ -42,7 +42,7 @@ const Dashboard = () => {
           {availableTests.map((test) => (
             <Card key={test.id} className="shadow-lg">
               <CardHeader>
-                <h2 className="text-xl font-semibold">{test.title}</h2>
+                <h2 className="text-xl font-semibold truncate">{test.title}</h2>
               </CardHeader>
               <CardContent>
                 <p className="mb-4 text-gray-700">{test.description}</p>
@@ -69,7 +69,7 @@ const Dashboard = () => {
           {completedTests.map((test) => (
             <Card key={test.id} className="shadow-lg">
               <CardHeader>
-                <h2 className="text-xl font-semibold">{test.title}</h2>
+                <h2 className="text-xl font-semibold truncate">{test.title}</h2>
               </CardHeader>
               <CardContent>
                 <p className="mb-4 text-gray-700">{test.description}</p>

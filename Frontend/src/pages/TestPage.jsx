@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
 
 const TestPage = () => {
   const [windowOpen, setWindowOpen] = useState(false);

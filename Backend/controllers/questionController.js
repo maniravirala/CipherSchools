@@ -32,6 +32,53 @@ exports.createQuestion = async (req, res) => {
   }
 };
 
+
+exports.createQuestionsBulk = async (req, res) => {
+  try {
+    const questions = req.body;
+
+    // Validate that the input is an array
+    if (!Array.isArray(questions)) {
+      return res.status(400).json({ message: 'Input must be an array of questions' });
+    }
+
+    // Validate each question object
+    for (const que of questions) {
+      const { question, options, correctOption, marks } = que;
+
+      if (!question || !options || !correctOption || !marks) {
+        return res.status(400).json({ message: 'All fields are required for each question' });
+      }
+
+      if (!Array.isArray(options) || options.length === 0) {
+        return res.status(400).json({ message: 'Options must be a non-empty array' });
+      }
+    }
+
+    // Create questions in bulk
+    const newQuestions = await Question.insertMany(questions.map(que => ({
+      question: que.question,
+      options: que.options,
+      correctOption: que.correctOption,
+      section: que.section,
+      marks: que.marks,
+      isDeleted: false, // Default value for isDeleted
+    })));
+
+    res.status(201).json({
+      message: 'Questions created successfully',
+      questions: newQuestions,
+      ids: newQuestions.map(que => que._id),
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error creating questions',
+      error: error.message,
+    });
+  }
+};
+
+
 // Get all questions
 exports.getAllQuestions = async (req, res) => {
   try {
