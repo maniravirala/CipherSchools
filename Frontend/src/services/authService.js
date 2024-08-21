@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const API_URL = import.meta.env.VITE_API_URL;
+console.log(API_URL);
 
 // Function to login user
 export const login = async (email, password) => {
