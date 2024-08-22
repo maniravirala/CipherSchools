@@ -51,8 +51,8 @@ export const startTest = async (id) => {
 // Function to submit a test
 export const submitTest = async (testId, selections) => {
   try {
-    console.log(selections);
-    const response = await axios.patch(
+    const token = getToken()
+    const response = await axios.post(
       `${API_URL}/submission/${testId}`,
       { selections },
       {

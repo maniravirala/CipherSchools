@@ -120,6 +120,7 @@ const Test = () => {
 
     try {
       const response = await submitTest(id, answers);
+      console.log(response);
       window.opener.postMessage({ type: "TEST_SUBMITTED" }, "*");
       window.close();
       localStorage.removeItem(id); // Clear storage after submission

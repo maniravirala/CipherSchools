@@ -9,6 +9,7 @@ const TestPage = () => {
 
   const openNewTab = () => {
     const newWindow = window.open(`/test/${id}`, "_blank", "popup");
+    // const newWindow = navigate(`/test/${id}`);
 
     if (newWindow) {
       // Ensure the window is loaded before attaching onload
