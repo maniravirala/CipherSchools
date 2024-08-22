@@ -9,6 +9,7 @@
 Explore the platform with these credentials:
 - **Email**: raviralamani5@gmail.com
 - **Password**: Exam@123
+- **Link**: [EXAMSTUDIO](https://examstudio.vercel.app)
 
 🔒 **Note**: Results won't be shared. Sign up to receive them. We don’t store passwords.
 
