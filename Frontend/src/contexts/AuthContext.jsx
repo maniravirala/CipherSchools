@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const token = Cookies.get("token") || localStorage.getItem('token');
 
   useEffect(() => {
+    console.log("Token:", token);
     setIsLoggedIn(!!token); // Ensure token is treated as a boolean
   }, [token]);
 
