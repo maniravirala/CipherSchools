@@ -213,15 +213,20 @@ exports.startTest = async (req, res) => {
       return res.status(400).json({ message: "Test already submitted" });
     } else if (submission.startedAt) {
       // if test is already started, then check the test duration and calculate the remaining time if the test is expired then submit the test
-      const currentTime = new Date().getTime();
-      const timeElapsed = currentTime - submission.startedAt;
-      const timeRemaining = submission.duration - timeElapsed;
+      
+      const startObj = new Date(submission.startedAt);
+      const milliseconds = duration * 1000;
 
-      if (timeRemaining <= 0) {
-        submission.endedAt = currentTime;
+      const endObj = new Date(startObj.getTime() + milliseconds);
+      const currentTime = new Date();
+      const remainingTime = endObj - currentTime;
+
+      if (remainingTime <= 0) {
+        submission.endedAt = Date.now();
         await submission.save();
         return res.status(400).json({ message: "Test already submitted" });
       }
+
       return res.status(200).json({ message: "Test already started", test: { ...transformedTests, startedAt: submission.startedAt } });
     }
 
