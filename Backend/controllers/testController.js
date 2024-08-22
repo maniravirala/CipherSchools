@@ -215,12 +215,11 @@ exports.startTest = async (req, res) => {
       // if test is already started, then check the test duration and calculate the remaining time if the test is expired then submit the test
       
       const startObj = new Date(submission.startedAt);
-      const milliseconds = duration * 1000;
+      const milliseconds = test.duration * 1000;
 
       const endObj = new Date(startObj.getTime() + milliseconds);
       const currentTime = new Date();
       const remainingTime = endObj - currentTime;
-
       if (remainingTime <= 0) {
         submission.endedAt = Date.now();
         await submission.save();
